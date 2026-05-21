@@ -43,6 +43,15 @@ func (t *Table) SetData(data [][]string) {
 	}
 }
 
+// Reset clears all rows and restores the header row. Use it before SetData
+// when the number of rows can shrink between renders.
+func (t *Table) Reset() {
+	t.Table.Clear()
+	for i, v := range t.headers {
+		t.SetCell(0, i, tview.NewTableCell(v))
+	}
+}
+
 func (t Table) GetRowSelection() (int, error) {
 	r, _ := t.GetSelection()
 	if r == 0 {
