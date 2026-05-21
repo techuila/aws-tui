@@ -5,5 +5,7 @@ import (
 )
 
 type (
-	CloudWatchLogGroup cwLogsTypes.LogGroup
+	CloudWatchLogGroup  cwLogsTypes.LogGroup
+	CloudWatchLogStream cwLogsTypes.LogStream
+	CloudWatchLogEvent  cwLogsTypes.OutputLogEvent
 )

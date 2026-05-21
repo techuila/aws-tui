@@ -52,8 +52,22 @@ func (c CloudWatchLogGroups) tagsHandler() {
 	c.app.AddAndSwitch(tagsView)
 }
 
+func (c CloudWatchLogGroups) logStreamsHandler() {
+	logGroupName, err := c.GetColSelection("NAME")
+	if err != nil {
+		return
+	}
+	logStreamsView := NewCloudWatchLogStreams(logGroupName, c.repo, c.app)
+	c.app.AddAndSwitch(logStreamsView)
+}
+
 func (c CloudWatchLogGroups) GetKeyActions() []KeyAction {
 	return []KeyAction{
+		{
+			Key:         tcell.NewEventKey(tcell.KeyRune, 's', tcell.ModNone),
+			Description: "Log Streams",
+			Action:      c.logStreamsHandler,
+		},
 		{
 			Key:         tcell.NewEventKey(tcell.KeyRune, 'T', tcell.ModNone),
 			Description: "Tags",
