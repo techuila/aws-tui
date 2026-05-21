@@ -8,7 +8,6 @@ import (
 	"github.com/bporter816/aws-tui/internal/ui"
 	"github.com/bporter816/aws-tui/internal/utils"
 	"github.com/bporter816/aws-tui/internal/view"
-	"github.com/gdamore/tcell/v2"
 )
 
 type CloudWatchLogStreams struct {
@@ -32,6 +31,7 @@ func NewCloudWatchLogStreams(logGroupName string, repo *repo.CloudWatch, app *Ap
 		app:          app,
 		logGroupName: logGroupName,
 	}
+	c.SetSelectedFunc(c.eventsHandler)
 	return c
 }
 
@@ -39,7 +39,7 @@ func (c CloudWatchLogStreams) GetLabels() []string {
 	return []string{c.logGroupName, "Log Streams"}
 }
 
-func (c CloudWatchLogStreams) eventsHandler() {
+func (c CloudWatchLogStreams) eventsHandler(row, col int) {
 	logStreamName, err := c.GetColSelection("NAME")
 	if err != nil {
 		return
@@ -49,13 +49,7 @@ func (c CloudWatchLogStreams) eventsHandler() {
 }
 
 func (c CloudWatchLogStreams) GetKeyActions() []KeyAction {
-	return []KeyAction{
-		{
-			Key:         tcell.NewEventKey(tcell.KeyRune, 'e', tcell.ModNone),
-			Description: "Events",
-			Action:      c.eventsHandler,
-		},
-	}
+	return []KeyAction{}
 }
 
 func formatLogTimestamp(ms *int64) string {

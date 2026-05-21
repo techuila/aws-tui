@@ -32,6 +32,7 @@ func NewCloudWatchLogGroups(repo *repo.CloudWatch, app *Application) *CloudWatch
 		repo: repo,
 		app:  app,
 	}
+	c.SetSelectedFunc(c.logStreamsHandler)
 	return c
 }
 
@@ -52,7 +53,7 @@ func (c CloudWatchLogGroups) tagsHandler() {
 	c.app.AddAndSwitch(tagsView)
 }
 
-func (c CloudWatchLogGroups) logStreamsHandler() {
+func (c CloudWatchLogGroups) logStreamsHandler(row, col int) {
 	logGroupName, err := c.GetColSelection("NAME")
 	if err != nil {
 		return
@@ -63,11 +64,6 @@ func (c CloudWatchLogGroups) logStreamsHandler() {
 
 func (c CloudWatchLogGroups) GetKeyActions() []KeyAction {
 	return []KeyAction{
-		{
-			Key:         tcell.NewEventKey(tcell.KeyRune, 's', tcell.ModNone),
-			Description: "Log Streams",
-			Action:      c.logStreamsHandler,
-		},
 		{
 			Key:         tcell.NewEventKey(tcell.KeyRune, 'T', tcell.ModNone),
 			Description: "Tags",
